@@ -1,6 +1,8 @@
 const container = document.querySelector('.container');
 let noOgGrid = 16;
 const resetBtn = document.querySelector('button');
+const clearBtn = document.querySelector('#clearBtn');
+const rainbowBtn = document.querySelector('#rainbowBtn')
 function createGrids(sizeOfGrid) {
     const wrapper = document.createElement('div');
     wrapper.classList.add('wrapper');
@@ -8,16 +10,28 @@ function createGrids(sizeOfGrid) {
         const row = document.createElement('div');
         row.classList.add('grid-row');
         for (let j = 0; j < sizeOfGrid; j++) {
-            const heightAndWidth = 800 / noOgGrid;
+            const heightAndWidth = 500 / noOgGrid;
             const gridBox = document.createElement('div');
             gridBox.classList.add('grid-box');
             gridBox.style.width = `${heightAndWidth}px`;
             gridBox.style.height = `${heightAndWidth}px`
             row.appendChild(gridBox);
             //background is changed when entering the mouse into each gridbox
-            gridBox.addEventListener('mouseenter', () => {
-                gridBox.style.backgroundColor = 'black'
-            })
+            gridBox.addEventListener('mouseenter', (e) => {
+                gridBox.style.backgroundColor = 'black';
+                // if rainbowbutton classname is active and mouse enter to the gridbox random colors will appear
+                if (e.type == 'mouseenter' && rainbowBtn.className == 'active') {
+                    const randomR = Math.floor(Math.random() * 256);
+                    const randomG = Math.floor(Math.random() * 256);
+                    const randomB = Math.floor(Math.random() * 256);
+                    gridBox.style.backgroundColor = `rgb(${randomR}, ${randomG}, ${randomB})`;
+                }
+
+            });
+            clearBtn.addEventListener('click', () => {
+                gridBox.style.backgroundColor = 'grey';
+
+            });
 
         }
         wrapper.appendChild(row);
@@ -38,4 +52,13 @@ resetBtn.addEventListener('click', () => {
         createGrids(noOgGrid);
     }
 
-})
+});
+
+// adding class active so button background and text color will change
+rainbowBtn.addEventListener('click', (e) => {
+    e.target.classList.toggle('active');
+    // console.log(e.target.className);
+});
+
+
+
